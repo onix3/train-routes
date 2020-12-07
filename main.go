@@ -1,11 +1,10 @@
 package main
 
 import (
-	"errors"
 	"github.com/onix3/train-routes/src"
+	"time"
 )
 
 func main() {
-	err := errors.New("Hello, Error!")
-	src.IsErr(err)
+	_ = src.GetAllSortedRoutes("Брест","Минск",time.Now().Format("2006-01-02"),"train")
 }
