@@ -40,14 +40,32 @@ func GetAllSortedRoutes(s1, s2, date, tt string) (allRoutes []route) {
 	return
 }
 
+// Существует ли такой запрос в кэше
+func inCache(q string) bool {
+	for k := range routesCache {
+		if q == k {
+			return true
+		}
+	}
+	return false
+}
+
 // Формирует ссылку и осуществляет запрос к API (если запроса нет в кэше)
-func getRoutes(city1, city2, date, tt string) []route {
+func getRoutes(city1, city2, date, tt string) (routes []route) {
 	url := fmt.Sprintf("%s%s%s%s%s%s%s%s",
 		string(r.A), codeOf[city1], string(r.T), codeOf[city2], string(r.F), tt, string(r.D), date)
 
-	routes := getRoutesFromUrl(city1,city2,url)
-	return routes
+	if inCache(url) {
+		fmt.Println("Уже есть в кэше")
+		routes = routesCache[url]
+	} else {
+		fmt.Println("Нету")
+		routes = getRoutesFromUrl(city1,city2,url)
+		routesCache[url] = routes
+	}
+	return
 }
+
 
 func getRoutesFromUrl(s1, s2, url string) (routes []route) {
 	type Segment struct {

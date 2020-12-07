@@ -10,7 +10,10 @@ func thisDay0000(t time.Time) time.Time {
 	return time.Date(y,m,d,0,0,0,0,time.Local)
 }
 
-var today0000 = thisDay0000(time.Now())
+var (
+	today0000 = thisDay0000(time.Now())
+	routesCache = map[string][]route{} // кэш запросов
+)
 
 var (
 	A fyne.App      // приложение
