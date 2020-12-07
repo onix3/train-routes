@@ -56,16 +56,14 @@ func getRoutes(city1, city2, date, tt string) (routes []route) {
 		string(r.A), codeOf[city1], string(r.T), codeOf[city2], string(r.F), tt, string(r.D), date)
 
 	if inCache(url) {
-		fmt.Println("Уже есть в кэше")
 		routes = routesCache[url]
 	} else {
-		fmt.Println("Нету")
 		routes = getRoutesFromUrl(city1,city2,url)
 		routesCache[url] = routes
+		saveCache()
 	}
 	return
 }
-
 
 func getRoutesFromUrl(s1, s2, url string) (routes []route) {
 	type Segment struct {
