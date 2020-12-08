@@ -14,6 +14,8 @@ func thisDay0000(t time.Time) time.Time {
 var (
 	today0000   = thisDay0000(time.Now())
 	routesCache = map[string][]route{} // кэш запросов
+	Last2       string
+	Last1       string // последние выбранные города
 )
 
 var (

@@ -12,6 +12,7 @@ func main() {
 
 	// запросы кэшируются: при повторном запросе тех же рейсов запрос к API не осуществляется
 	src.LoadCache()
+	src.Last1,src.Last2 = src.LoadLastCities()
 
 	src.W = src.A.NewWindow("Расписаньице")
 	src.W.SetContent(src.Content())

@@ -28,3 +28,18 @@ func saveCache() {
 	IsErr(err)
 	A.Preferences().SetString("cache_requests", string(data))
 }
+
+// Загрузить из preferences города, маршруты между которыми запрашивались в последний раз
+func LoadLastCities() (c1,c2 string) {
+	s := A.Preferences().StringWithFallback("last_cities", "")
+	split := strings.Split(s,"•")
+	if s == "" || len(split) != 2 {
+		return "Брест", "Минск"
+	}
+	return split[0], split[1]
+}
+
+// Сохранить в preferences города, маршруты между которыми запрашивались в последний раз
+func saveLastCities(c1,c2 string) {
+	A.Preferences().SetString("last_cities", c1 + "•" + c2)
+}
