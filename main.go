@@ -7,8 +7,6 @@ import (
 )
 
 func main() {
-	//_ = src.GetAllSortedRoutes("Брест","Минск",time.Now().Format("2006-01-02"),"train")
-
 	src.A = app.NewWithID("train-routes")
 	src.A.SetIcon(resource.TrainPng)
 

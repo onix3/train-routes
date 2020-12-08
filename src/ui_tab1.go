@@ -24,12 +24,10 @@ func content1() (C fyne.CanvasObject) {
 		Style:    widget.PrimaryButton,
 		Icon:     theme.DocumentCreateIcon(),
 		OnTapped: func() {
-
+			s1,s2 := select1.Selected, select2.Selected
+			mainButtonClick(s1,s2,"train")
 		},
 	}
-
-
-
 
 	box := widget.NewVBox(
 		widget.NewHBox(select1, select2),

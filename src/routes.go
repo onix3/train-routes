@@ -20,7 +20,7 @@ type route struct{
 
 // Получение списка рейсов в прямом и обратном направлениях,
 // к тому же отсортированных по времени отправления
-func GetAllSortedRoutes(s1, s2, date, tt string) (allRoutes []route) {
+func getAllSortedRoutes(s1, s2, date, tt string) (allRoutes []route) {
 	routes12 := getRoutes(s1, s2, date, tt)
 	routes21 := getRoutes(s2, s1, date, tt)
 
