@@ -10,7 +10,7 @@ func mainButtonClick(s1,s2,tt string) {
 	if s1 != s2 {
 		routes := getAllSortedRoutes(s1,s2, time.Now().Format("2006-01-02"), tt)
 		if len(routes) > 0 {
-
+			drawDiagram(routes, s1 + " → " + s2)
 		} else {
 			dialog.ShowInformation("", "Нет рейсов", W)
 		}
