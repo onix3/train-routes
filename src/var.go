@@ -3,6 +3,7 @@ package src
 import (
 	"fyne.io/fyne"
 	"fyne.io/fyne/widget"
+	"github.com/fogleman/gg"
 	"time"
 )
 
@@ -22,4 +23,5 @@ var (
 	A                fyne.App       // приложение
 	W                fyne.Window    // главное окно
 	select1, select2 *widget.Select // селекторы
+	forwardPattern, reversePattern gg.Pattern
 )

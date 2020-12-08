@@ -39,6 +39,10 @@ func drawDiagram(routes []route, fileName string) image.Image {
 	slr,sb := 100.0,35.0 // отступы слева-справа, снизу
 	h := math.Round((float64(H)-sb)/float64(len(routes)))
 
+	// два узора для каждого направления
+	forwardPattern = pattern(h/2,h,true)
+	reversePattern = pattern(h/2,h,false)
+
 	// создание полотна и заливка
 	C := gg.NewContext(W, H)
 	C.SetRGBA255(128,128,128,255)
@@ -95,9 +99,9 @@ func drawDiagram(routes []route, fileName string) image.Image {
 		y1 := math.Round(float64(i)*h)+0.5
 
 		if t.S1 == select1.Selected {
-			C.SetRGBA255(96,192,96,255)
+			C.SetFillStyle(forwardPattern)
 		} else {
-			C.SetRGBA255(128,128,255,255)
+			C.SetFillStyle(reversePattern)
 		}
 		C.DrawRectangle(x1,y1,x2-x1,h)
 		C.Fill()
