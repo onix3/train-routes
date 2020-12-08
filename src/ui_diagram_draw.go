@@ -2,6 +2,7 @@ package src
 
 import (
 	"github.com/fogleman/gg"
+	"github.com/onix3/train-routes/resource"
 	"image"
 	"math"
 	"os"
@@ -9,7 +10,16 @@ import (
 	"time"
 )
 
-
+// Ресурс (представленный как массив байтов) преобразуется в файл,
+// который появляется в папке с исполняемым файлом
+func resourceToFile(data []byte, name string) {
+	f,err := os.Create(name)
+	IsErr(err)
+	_,err = f.Write(data)
+	IsErr(err)
+	err = f.Close()
+	IsErr(err)
+}
 
 // Диаграмма включает в себя все рейсы
 // Последний рейс может закончиться на следующие сутки далеко за полночь
@@ -33,6 +43,11 @@ func drawDiagram(routes []route, fileName string) image.Image {
 	C := gg.NewContext(W, H)
 	C.SetRGBA255(128,128,128,255)
 	C.Clear()
+
+	// создать файл шрифта из ресурса и применить его
+	resourceToFile(resource.ConsolasTtf.StaticContent,"consolas.ttf")
+	err := C.LoadFontFace("consolas.ttf",24)
+	IsErr(err)
 
 	// сколько часов охватывает диаграмма
 	hours := int(routes[len(routes)-1].T2.Sub(today0000).Hours()+1)
@@ -101,12 +116,19 @@ func drawDiagram(routes []route, fileName string) image.Image {
 			x2+10,y1+h/2,0,0.4)
 	}
 
+	// применить шрифт снова (другого размера) и удалить файл
+	err = C.LoadFontFace("consolas.ttf",48)
+	IsErr(err)
+	err = os.Remove("consolas.ttf")
+	IsErr(err)
+
 	// названия городов
 	C.SetRGBA255(0,0,0,64)
 	C.DrawStringAnchored(select1.Selected,
 		slr+20,float64(H/2),0,0.5)
 	C.DrawStringAnchored(select2.Selected,
 		float64(W)-slr-20,float64(H/2),1,0.5)
+
 
 	// сохранение диаграммы на Рабочий Стол
 	dir,err := os.UserHomeDir()
