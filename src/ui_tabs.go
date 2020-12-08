@@ -12,7 +12,7 @@ func Content() fyne.CanvasObject {
 		&widget.TabItem{
 			Text:    "Расписание",
 			Icon:    theme.ContentPasteIcon(),
-			Content: widget.NewLabel(strings.Repeat(" ",77)),
+			Content: content1(),
 		},
 		&widget.TabItem{
 			Text:    "Тема",

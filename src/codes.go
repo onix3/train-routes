@@ -1,5 +1,7 @@
 package src
 
+import "sort"
+
 // Коды населённых пунктов в Республике Беларусь
 // с ж/д станциями и населением >20k
 var codeOf = map[string]string{
@@ -40,4 +42,29 @@ var codeOf = map[string]string{
 	"Слуцк"        :"23251",
 	// "Сморгонь"     :"23349", только электрички до Молодечно
 	"Солигорск"    :"23259",
+}
+
+// Принадлежит ли строка множеству строк
+func inSlice(s string, S []string) bool {
+	for _,ss := range S {
+		if ss == s {
+			return true
+		}
+	}
+	return false
+}
+
+// Упорядоченный список городов для селекторов
+func allCities() []string {
+	strongCities := []string{"Минск","Брест","Витебск","Гомель","Гродно","Могилёв"}
+	cities := []string{}
+	for k := range codeOf {
+		if !inSlice(k,strongCities) {
+			cities = append(cities, k)
+		}
+	}
+	sort.Slice(cities, func(i,j int) bool {
+		return cities[i] < cities[j]
+	})
+	return append(strongCities, cities...)
 }
