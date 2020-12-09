@@ -52,14 +52,16 @@ func inCache(q string) bool {
 
 // Формирует ссылку и осуществляет запрос к API (если запроса нет в кэше)
 func getRoutes(city1, city2, date, tt string) (routes []route) {
-	url := fmt.Sprintf("%s%s%s%s%s%s%s%s",
-		string(r.A), codeOf[city1], string(r.T), codeOf[city2], string(r.F), tt, string(r.D), date)
+	q := fmt.Sprintf("%s%s%s%s%s%s%s",
+		codeOf[city1], string(r.T), codeOf[city2], string(r.F), tt, string(r.D), date)
+	url := fmt.Sprintf("%s%s",
+		string(r.A), q)
 
-	if inCache(url) {
-		routes = routesCache[url]
+	if inCache(q) {
+		routes = routesCache[q]
 	} else {
 		routes = getRoutesFromUrl(city1,city2,url)
-		routesCache[url] = routes
+		routesCache[q] = routes
 		saveCache()
 	}
 	return

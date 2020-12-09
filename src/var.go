@@ -31,4 +31,5 @@ var (
 	resultText                     *canvas.Text
 	resultBox                      *tappableBox
 	ScreenHeight                   int
+	mapImage                       image.Image   // изображение карты
 )

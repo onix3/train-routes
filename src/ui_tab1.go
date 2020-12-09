@@ -1,16 +1,38 @@
 package src
 
 import (
+	"bytes"
 	"fyne.io/fyne"
 	"fyne.io/fyne/canvas"
 	"fyne.io/fyne/layout"
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
+	"github.com/anthonynsimon/bild/transform"
+	"github.com/onix3/train-timetable/resource"
+	"image"
 	"image/color"
 )
 
 // Содержимое первой вкладки "Расписание"
 func content1() (C fyne.CanvasObject) {
+	// миниатюра карты
+	mapImage, _, _ = image.Decode(bytes.NewReader(resource.BelarusJpg.StaticContent))
+	bigSize := int(float64(ScreenHeight)*0.9)
+	mapImage = transform.Resize(mapImage,2362*bigSize/2100,bigSize, transform.Linear)
+	size := 200
+	mapImageWidget := &canvas.Image{
+		Image:        transform.Resize(mapImage,size,size, transform.Linear),
+		FillMode:     canvas.ImageFillOriginal,
+		ScaleMode:    canvas.ImageScalePixels,
+	}
+	mapImageWidget.Resize(fyne.NewSize(size, size))
+	mapBox := newTappableBox(
+		widget.NewVBox(mapImageWidget),
+		deployMap,
+	)
+
+	////////////////////////////////////////////////////////
+
 	// два селектора и кнопка
 	select1 = &widget.Select{
 		Selected:  Last1,
@@ -63,6 +85,8 @@ func content1() (C fyne.CanvasObject) {
 		mainButton,
 	)
 	C = widget.NewVBox(
+		widget.NewHBox(layout.NewSpacer(),mapBox,layout.NewSpacer()),
+		widget.NewLabel(""),
 		widget.NewHBox(layout.NewSpacer(),box,layout.NewSpacer()),
 		layout.NewSpacer(),
 		widget.NewVBox(layout.NewSpacer(), resultBox,layout.NewSpacer()),

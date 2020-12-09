@@ -8,6 +8,34 @@ import (
 	"fyne.io/fyne/widget"
 )
 
+func deployMap() {
+	w := A.NewWindow(" ")
+
+	ci := &canvas.Image{
+		Image:     mapImage,
+		FillMode:  canvas.ImageFillOriginal,
+		ScaleMode: canvas.ImageScalePixels,
+	}
+	b := &widget.Button{
+		Text:     "",
+		Style:    widget.PrimaryButton,
+		Icon:     theme.ConfirmIcon(),
+		OnTapped: func() {
+			w.Close()
+		},
+	}
+
+	C := fyne.NewContainerWithLayout(layout.NewCenterLayout(),
+		widget.NewVBox(
+			ci,
+			widget.NewHBox(layout.NewSpacer(),b,layout.NewSpacer()),
+		),
+	)
+	w.SetContent(C)
+	w.SetFullScreen(true)
+	w.Show()
+}
+
 func deployResult() {
 	w := A.NewWindow(" ")
 
