@@ -55,7 +55,7 @@ func content1() (C fyne.CanvasObject) {
 		TextSize: 16,
 		TextStyle: fyne.TextStyle{Bold: true},
 	}
-	resultBox = newTappableBox(widget.NewVBox(resultImageWidget, resultText))
+	resultBox = newTappableBox(widget.NewVBox(resultImageWidget, resultText), deployResult)
 	resultBox.Hide()
 
 	box := widget.NewVBox(
