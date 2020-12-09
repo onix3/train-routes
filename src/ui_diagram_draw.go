@@ -36,6 +36,11 @@ func drawDiagram(routes []route, fileName string) image.Image {
 	today0000 = thisDay0000(routes[0].T1)
 
 	coef := 0.9
+	// Для первых трёх диаграмм оставить место для надписи про Янд-кс
+	if СколькоДиаграммСделано <= 2 {
+		coef = 0.875
+	}
+
 	// Высота изображения исходит от высоты, которую диаграмма займёт при отображении на весь экран
 	H := int(float64(ScreenHeight)*coef)
 	W := H*16/9

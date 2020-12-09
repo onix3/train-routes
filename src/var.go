@@ -19,6 +19,7 @@ var (
 	routesCache = map[string][]route{} // кэш запросов
 	Last2       string
 	Last1       string // последние выбранные города
+	СколькоДиаграммСделано int
 )
 
 var (

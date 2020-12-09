@@ -2,6 +2,7 @@ package src
 
 import (
 	"encoding/json"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -42,4 +43,18 @@ func LoadLastCities() (c1,c2 string) {
 // Сохранить в preferences города, маршруты между которыми запрашивались в последний раз
 func saveLastCities(c1,c2 string) {
 	A.Preferences().SetString("last_cities", c1 + "•" + c2)
+}
+
+// Загрузить количество полученных диаграм
+func LoadCountOfCompletedDiagrams() int {
+	s := A.Preferences().StringWithFallback("count_of_completed_diagrams", "")
+	r,err := strconv.Atoi(s)
+	if s == "" || err != nil {
+		return 0
+	}
+	return r
+}
+
+func saveCountOfCompletedDiagrams() {
+	A.Preferences().SetString("count_of_completed_diagrams", strconv.Itoa(СколькоДиаграммСделано))
 }

@@ -1,6 +1,7 @@
 package src
 
 import (
+	"fmt"
 	"fyne.io/fyne/dialog"
 	"github.com/anthonynsimon/bild/transform"
 	"time"
@@ -14,6 +15,10 @@ func mainButtonClick(s1,s2,tt string) {
 			// Нарисовать диаграмму и сделать миниатюру с подписью
 			img := drawDiagram(routes, s1 + " → " + s2)
 			smallImg := transform.Resize(img, 320, 180, transform.Linear)
+
+			СколькоДиаграммСделано++
+			saveCountOfCompletedDiagrams()
+			fmt.Println("Сделано", СколькоДиаграммСделано)
 
 			resultImage = img
 			resultImageWidget.Image = smallImg

@@ -17,7 +17,7 @@ import (
 func content1() (C fyne.CanvasObject) {
 	// миниатюра карты
 	mapImage, _, _ = image.Decode(bytes.NewReader(resource.BelarusJpg.StaticContent))
-	bigSize := int(float64(ScreenHeight)*0.9)
+	bigSize := int(float64(ScreenHeight)*0.875)
 	mapImage = transform.Resize(mapImage,2362*bigSize/2100,bigSize, transform.Linear)
 	size := 200
 	mapImageWidget := &canvas.Image{
