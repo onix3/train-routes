@@ -30,4 +30,5 @@ var (
 	resultImageWidget              *canvas.Image // миниатюра диаграммы
 	resultText                     *canvas.Text
 	resultBox                      *tappableBox
+	ScreenHeight                   int
 )

@@ -2,7 +2,7 @@ package src
 
 import (
 	"github.com/fogleman/gg"
-	"github.com/onix3/train-routes/resource"
+	"github.com/onix3/train-timetable/resource"
 	"image"
 	"math"
 	"os"
@@ -35,7 +35,10 @@ func timePercent(t time.Time, hoursRange int) float64 {
 func drawDiagram(routes []route, fileName string) image.Image {
 	today0000 = thisDay0000(routes[0].T1)
 
-	W,H := 1600,900
+	coef := 0.9
+	// Высота изображения исходит от высоты, которую диаграмма займёт при отображении на весь экран
+	H := int(float64(ScreenHeight)*coef)
+	W := H*16/9
 	slr,sb := 100.0,35.0 // отступы слева-справа, снизу
 	h := math.Round((float64(H)-sb)/float64(len(routes)))
 

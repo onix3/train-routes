@@ -1,4 +1,4 @@
-module github.com/onix3/train-routes
+module github.com/onix3/train-timetable
 
 go 1.15
 

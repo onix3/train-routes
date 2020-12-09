@@ -3,7 +3,7 @@ package src
 import (
 	"encoding/json"
 	"fmt"
-	r "github.com/onix3/train-routes/resource"
+	r "github.com/onix3/train-timetable/resource"
 	"io/ioutil"
 	"net/http"
 	"sort"
