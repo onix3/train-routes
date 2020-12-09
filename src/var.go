@@ -2,8 +2,10 @@ package src
 
 import (
 	"fyne.io/fyne"
+	"fyne.io/fyne/canvas"
 	"fyne.io/fyne/widget"
 	"github.com/fogleman/gg"
+	"image"
 	"time"
 )
 
@@ -24,4 +26,8 @@ var (
 	W                fyne.Window    // главное окно
 	select1, select2 *widget.Select // селекторы
 	forwardPattern, reversePattern gg.Pattern
+	resultImage                    image.Image   // изображение диаграммы
+	resultImageWidget              *canvas.Image // миниатюра диаграммы
+	resultText                     *canvas.Text
+	resultBox                      *tappableBox
 )

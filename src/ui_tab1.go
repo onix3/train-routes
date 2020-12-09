@@ -2,9 +2,11 @@ package src
 
 import (
 	"fyne.io/fyne"
+	"fyne.io/fyne/canvas"
 	"fyne.io/fyne/layout"
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
+	"image/color"
 )
 
 // Содержимое первой вкладки "Расписание"
@@ -38,12 +40,34 @@ func content1() (C fyne.CanvasObject) {
 	// нужно чтобы всё же кнопка срабатывала
 	Last1 = ""
 
+	////////////////////////////////////////////////////////
+
+	// миниатюра диаграммы и подпись
+	resultImageWidget = &canvas.Image{
+		FillMode:     canvas.ImageFillOriginal,
+		ScaleMode:    canvas.ImageScalePixels,
+	}
+	resultImageWidget.Resize(fyne.NewSize(320,180))
+	resultText = &canvas.Text{
+		Color: color.RGBA{242, 78, 124, 255},
+		Text: "",
+		Alignment: fyne.TextAlignCenter,
+		TextSize: 16,
+		TextStyle: fyne.TextStyle{Bold: true},
+	}
+	resultBox = newTappableBox(widget.NewVBox(resultImageWidget, resultText))
+	resultBox.Hide()
+
 	box := widget.NewVBox(
 		widget.NewHBox(select1, select2),
 		mainButton,
 	)
 	C = widget.NewVBox(
 		widget.NewHBox(layout.NewSpacer(),box,layout.NewSpacer()),
+		layout.NewSpacer(),
+		widget.NewVBox(layout.NewSpacer(), resultBox,layout.NewSpacer()),
+		layout.NewSpacer(),
 	)
+
 	return
 }
