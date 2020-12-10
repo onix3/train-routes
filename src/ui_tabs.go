@@ -4,7 +4,6 @@ import (
 	"fyne.io/fyne"
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
-	"strings"
 )
 
 func Content() fyne.CanvasObject {
@@ -17,7 +16,7 @@ func Content() fyne.CanvasObject {
 		&widget.TabItem{
 			Text:    "Тема",
 			Icon:    theme.SettingsIcon(),
-			Content: widget.NewLabel(strings.Repeat(" ",77)),
+			Content: content2(),
 		},
 	)
 

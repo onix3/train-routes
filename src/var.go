@@ -33,4 +33,5 @@ var (
 	resultBox                      *tappableBox
 	ScreenHeight                   int
 	mapImage                       image.Image   // изображение карты
+	T                              *userTheme     // текущая тема
 )

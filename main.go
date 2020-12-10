@@ -12,6 +12,9 @@ func main() {
 	src.A = app.NewWithID("train-timetable")
 	src.A.SetIcon(resource.TrainPng)
 
+	src.T = src.NewTheme()
+	src.A.Settings().SetTheme(src.T) // TODO
+
 	// запросы кэшируются: при повторном запросе тех же рейсов запрос к API не осуществляется
 	src.LoadCache()
 	src.Last1,src.Last2 = src.LoadLastCities()
