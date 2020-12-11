@@ -59,11 +59,13 @@ func content2() fyne.CanvasObject {
 	)
 
 	vbox := widget.NewVBox(
+		widget.NewLabel(""),
 		widget.NewHBox(layout.NewSpacer(), colorRows(T),layout.NewSpacer()),
 		widget.NewLabel(""),
 		widget.NewLabel(""),
 		group,
 		widget.NewHBox(label1, hyperLink),
+		widget.NewLabel(""),
 	)
 
 	C := fyne.NewContainerWithLayout(layout.NewCenterLayout(), vbox)

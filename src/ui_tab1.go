@@ -43,7 +43,7 @@ func content1() (C fyne.CanvasObject) {
 		Options:  allCities(),
 	}
 
-	mainButton := &widget.Button{
+	mainButton = &widget.Button{
 		Text:     "Намутить",
 		Style:    widget.PrimaryButton,
 		Icon:     theme.DocumentCreateIcon(),
@@ -55,6 +55,11 @@ func content1() (C fyne.CanvasObject) {
 	// когда приложение только что запущено и в селекторах последние выбранные станции
 	// нужно чтобы всё же кнопка срабатывала
 	PastCity1 = ""
+
+	box := widget.NewVBox(
+		widget.NewHBox(select1, select2),
+		mainButton,
+	)
 
 	////////////////////////////////////////////////////////
 
@@ -74,16 +79,13 @@ func content1() (C fyne.CanvasObject) {
 	resultBox = newTappableBox(widget.NewVBox(resultImageWidget, resultText), deployResult)
 	resultBox.Hide()
 
-	box := widget.NewVBox(
-		widget.NewHBox(select1, select2),
-		mainButton,
-	)
 	C = widget.NewVBox(
-		widget.NewHBox(layout.NewSpacer(),mapBox,layout.NewSpacer()),
 		widget.NewLabel(""),
-		widget.NewHBox(layout.NewSpacer(),box,layout.NewSpacer()),
+		widget.NewHBox(layout.NewSpacer(), mapBox, layout.NewSpacer()),
+		widget.NewLabel(""),
+		widget.NewHBox(layout.NewSpacer(), box, layout.NewSpacer()),
 		layout.NewSpacer(),
-		widget.NewVBox(layout.NewSpacer(), resultBox,layout.NewSpacer()),
+		widget.NewVBox(layout.NewSpacer(), resultBox, layout.NewSpacer()),
 		layout.NewSpacer(),
 	)
 	return

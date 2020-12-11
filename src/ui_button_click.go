@@ -33,21 +33,22 @@ func mainButtonClick(s1,s2,tt string) {
 	// кэш расписания доступен оффлайн
 	// подключение в Интернету проверять, если нет в кэше
 	if inCache(q) {
+		button2()
 		routes = routesCache[q]
+		go buttonBack()
 	} else {
 		PastCity1,PastCity2 = s1,s2
 		saveLastCities(s1,s2)
 
+		resultBox.Hide()
+
 		if s1 == s2 {
-			resultBox.Hide()
 			dialog.ShowInformation("", "Города должны быть разными", W)
-			resultText.Text = ""
 			return
 		}
 
 		// проверка подключения к Интернету
 		if !haveConnection() {
-			resultBox.Hide()
 			dialog.ShowInformation("", "Нет подключения к Интернету", W)
 			return
 		}

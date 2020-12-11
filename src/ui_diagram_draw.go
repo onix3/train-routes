@@ -21,6 +21,16 @@ func resourceToFile(data []byte, name string) {
 	IsErr(err)
 }
 
+// самое позднее время прибытия
+func latestArrival(routes []route) (t time.Time) {
+	for _,r := range routes {
+		if r.T2.After(t) {
+			t = r.T2
+		}
+	}
+	return
+}
+
 // Диаграмма включает в себя все рейсы
 // Последний рейс может закончиться на следующие сутки далеко за полночь
 // То есть диапазон, охватываемый диаграммой, может составить, допустим, 24+7 = 31 час
@@ -62,7 +72,7 @@ func drawDiagram(routes []route, fileName string) image.Image {
 	IsErr(err)
 
 	// сколько часов охватывает диаграмма
-	hours := int(routes[len(routes)-1].T2.Sub(today0000).Hours()+1)
+	hours := int(latestArrival(routes).Sub(today0000).Hours()+1)
 	if hours < 24 {
 		hours = 24
 	}

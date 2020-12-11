@@ -3,6 +3,7 @@ package src
 import (
 	"fyne.io/fyne"
 	"fyne.io/fyne/canvas"
+	"fyne.io/fyne/driver/desktop"
 	"fyne.io/fyne/layout"
 	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
@@ -10,7 +11,9 @@ import (
 )
 
 func deployMap() {
-	w := A.NewWindow(" ")
+	w := A.Driver().(desktop.Driver).CreateSplashWindow()
+	w.Resize(fyne.NewSize(ScreenWidth,ScreenHeight))
+	w.CenterOnScreen()
 
 	label1 := widget.NewLabel("Открыть")
 	parsed,_ := url.Parse("https://yandex.ru/maps/?um=constructor%3Ad7846cc6cf6516763b73d7d45ca4bff3188045e89037947249cd0afb2dad6f6d&source=constructorLink")
@@ -39,12 +42,13 @@ func deployMap() {
 		),
 	)
 	w.SetContent(C)
-	w.SetFullScreen(true)
 	w.Show()
 }
 
 func deployResult() {
-	w := A.NewWindow(" ")
+	w := A.Driver().(desktop.Driver).CreateSplashWindow()
+	w.Resize(fyne.NewSize(ScreenWidth,ScreenHeight))
+	w.CenterOnScreen()
 
 	label := widget.NewLabel("Данные предоставлены сервисом Яндекс.Расписания")
 	parsed,_ := url.Parse("https://rasp.yandex.by/")
@@ -75,7 +79,7 @@ func deployResult() {
 	}
 
 	C := fyne.NewContainerWithLayout(layout.NewCenterLayout(), vbox)
+
 	w.SetContent(C)
-	w.SetFullScreen(true)
 	w.Show()
 }

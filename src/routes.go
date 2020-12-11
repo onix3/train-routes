@@ -31,8 +31,11 @@ func inCache(q string) bool {
 // Получение списка рейсов в прямом и обратном направлениях,
 // к тому же отсортированных по времени отправления
 func getAllSortedRoutes(c1, c2, date, tt string) (allRoutes []route) {
+	button1()
 	routes12 := getRoutes(c1, c2, date, tt)
+	button2()
 	routes21 := getRoutes(c2, c1, date, tt)
+	go buttonBack()
 	allRoutes = append(routes12, routes21...)
 
 	sort.Slice(allRoutes, func(i,j int) bool {
@@ -58,13 +61,6 @@ func getRoutes(c1, c2, date, tt string) (routes []route) {
 
 	routes = getRoutesFromUrl(c1, c2,url)
 
-	//if inCache(q) {
-	//	routes = routesCache[q]
-	//} else {
-	//	routes = getRoutesFromUrl(c1, c2,url)
-	//	routesCache[q] = routes
-	//	saveCache()
-	//}
 	return
 }
 

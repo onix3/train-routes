@@ -35,7 +35,7 @@ func main() {
 	}()
 
 	src.W = src.A.NewWindow("Расписаньице")
-	src.ScreenHeight = src.GetScreenHeight()
+	src.ScreenWidth, src.ScreenHeight = src.GetScreenHeight()
 	src.W.SetContent(src.Content())
 	src.W.CenterOnScreen()
 	src.W.ShowAndRun()
