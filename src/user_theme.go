@@ -35,7 +35,7 @@ type userTheme struct {
 	scrollBarSmallSize int
 }
 
-func NewTheme() *userTheme {
+func newTheme() *userTheme {
 	return &userTheme{
 		backgroundColor:     theme.DarkTheme().BackgroundColor(),
 		buttonColor:         theme.DarkTheme().ButtonColor(),

@@ -35,12 +35,12 @@ func content1() (C fyne.CanvasObject) {
 
 	// два селектора и кнопка
 	select1 = &widget.Select{
-		Selected:  Last1,
-		Options:   allCities(),
+		Selected: PastCity1,
+		Options:  allCities(),
 	}
 	select2 = &widget.Select{
-		Selected:  Last2,
-		Options:   allCities(),
+		Selected: PastCity2,
+		Options:  allCities(),
 	}
 
 	mainButton := &widget.Button{
@@ -48,19 +48,13 @@ func content1() (C fyne.CanvasObject) {
 		Style:    widget.PrimaryButton,
 		Icon:     theme.DocumentCreateIcon(),
 		OnTapped: func() {
-			// незачем что-то делать, если в селекторах станции не менялись
-			s1,s2 := select1.Selected, select2.Selected
-			if !(s1 == Last1 && s2 == Last2) {
-				mainButtonClick(s1,s2,"train")
-				Last1,Last2 = s1,s2
-				saveLastCities(s1,s2)
-			}
+			mainButtonClick(select1.Selected, select2.Selected,"train")
 		},
 	}
 
 	// когда приложение только что запущено и в селекторах последние выбранные станции
 	// нужно чтобы всё же кнопка срабатывала
-	Last1 = ""
+	PastCity1 = ""
 
 	////////////////////////////////////////////////////////
 
@@ -92,6 +86,5 @@ func content1() (C fyne.CanvasObject) {
 		widget.NewVBox(layout.NewSpacer(), resultBox,layout.NewSpacer()),
 		layout.NewSpacer(),
 	)
-
 	return
 }

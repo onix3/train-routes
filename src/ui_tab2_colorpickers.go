@@ -51,7 +51,7 @@ func (c *colorSelector) setColor(clr color.Color) {
 	c.entry.SetText(hexColorString(clr))
 	c.rect.SetColor(clr)
 	c.update(clr)
-	A.Settings().SetTheme(T) // TODO
+	applyTheme()
 }
 
 func hexColorString(c color.Color) string {

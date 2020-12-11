@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// Рейс состоит из названий станций и времени отправления/прибытия
+// Отдельная структура с короткими тегами для компактного сохранения кэша в preferences
 type route struct{
 	S1 string    `json:"s1"`
 	S2 string    `json:"s2"`
@@ -18,12 +18,21 @@ type route struct{
 	T2 time.Time `json:"t2"`
 }
 
+// Существует ли такой запрос в кэше
+func inCache(q string) bool {
+	for k := range routesCache {
+		if q == k {
+			return true
+		}
+	}
+	return false
+}
+
 // Получение списка рейсов в прямом и обратном направлениях,
 // к тому же отсортированных по времени отправления
-func getAllSortedRoutes(s1, s2, date, tt string) (allRoutes []route) {
-	routes12 := getRoutes(s1, s2, date, tt)
-	routes21 := getRoutes(s2, s1, date, tt)
-
+func getAllSortedRoutes(c1, c2, date, tt string) (allRoutes []route) {
+	routes12 := getRoutes(c1, c2, date, tt)
+	routes21 := getRoutes(c2, c1, date, tt)
 	allRoutes = append(routes12, routes21...)
 
 	sort.Slice(allRoutes, func(i,j int) bool {
@@ -40,34 +49,26 @@ func getAllSortedRoutes(s1, s2, date, tt string) (allRoutes []route) {
 	return
 }
 
-// Существует ли такой запрос в кэше
-func inCache(q string) bool {
-	for k := range routesCache {
-		if q == k {
-			return true
-		}
-	}
-	return false
-}
-
 // Формирует ссылку и осуществляет запрос к API (если запроса нет в кэше)
-func getRoutes(city1, city2, date, tt string) (routes []route) {
+func getRoutes(c1, c2, date, tt string) (routes []route) {
 	q := fmt.Sprintf("%s%s%s%s%s%s%s",
-		codeOf[city1], string(r.T), codeOf[city2], string(r.F), tt, string(r.D), date)
+		codeOf[c1], string(r.T), codeOf[c2], string(r.F), tt, string(r.D), date)
 	url := fmt.Sprintf("%s%s",
 		string(r.A), q)
 
-	if inCache(q) {
-		routes = routesCache[q]
-	} else {
-		routes = getRoutesFromUrl(city1,city2,url)
-		routesCache[q] = routes
-		saveCache()
-	}
+	routes = getRoutesFromUrl(c1, c2,url)
+
+	//if inCache(q) {
+	//	routes = routesCache[q]
+	//} else {
+	//	routes = getRoutesFromUrl(c1, c2,url)
+	//	routesCache[q] = routes
+	//	saveCache()
+	//}
 	return
 }
 
-func getRoutesFromUrl(s1, s2, url string) (routes []route) {
+func getRoutesFromUrl(c1,c2, url string) (routes []route) {
 	type Segment struct {
 		Arrival   time.Time `json:"arrival"`
 		Departure time.Time `json:"departure"`
@@ -82,11 +83,11 @@ func getRoutesFromUrl(s1, s2, url string) (routes []route) {
 	IsErr(err)
 
 	for _,s := range response.Segments {
-		// почему-то Яндекс присылает маршруты и следующих суток
+		// почему-то Янд-кс присылает маршруты и следующих суток
 		if s.Departure.Before(today0000.AddDate(0,0,1)) {
 			routes = append(routes, route{
-				S1: s1,
-				S2: s2,
+				S1: c1,
+				S2: c2,
 				T1: s.Departure,
 				T2: s.Arrival,
 			})
@@ -97,13 +98,13 @@ func getRoutesFromUrl(s1, s2, url string) (routes []route) {
 }
 
 // json по запросу
-func getJson(url string) []byte {
-	resp, err := http.Get(url)
+func getJson(url string) (data []byte) {
+	resp,err := http.Get(url)
 	IsErr(err)
-	body, err := ioutil.ReadAll(resp.Body)
+	data,err = ioutil.ReadAll(resp.Body)
 	IsErr(err)
 	err = resp.Body.Close()
 	IsErr(err)
 
-	return body
+	return
 }
