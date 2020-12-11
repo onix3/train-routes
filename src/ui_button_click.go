@@ -4,8 +4,24 @@ import (
 	"fmt"
 	"fyne.io/fyne/dialog"
 	"github.com/anthonynsimon/bild/transform"
+	"net/http"
 	"time"
 )
+
+// Проверка подключения к Интернету
+func haveConnection() bool {
+	resp,err := http.Get("https://www.google.com/")
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		fmt.Println(resp.StatusCode)
+		return false
+	}
+	return true
+}
 
 // Событие нажатия кнопки
 func mainButtonClick(s1,s2,tt string) {
@@ -26,6 +42,13 @@ func mainButtonClick(s1,s2,tt string) {
 			resultBox.Hide()
 			dialog.ShowInformation("", "Города должны быть разными", W)
 			resultText.Text = ""
+			return
+		}
+
+		// проверка подключения к Интернету
+		if !haveConnection() {
+			resultBox.Hide()
+			dialog.ShowInformation("", "Нет подключения к Интернету", W)
 			return
 		}
 
