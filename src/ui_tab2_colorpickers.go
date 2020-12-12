@@ -66,14 +66,14 @@ func colorRow(title string, defaultColor color.Color, update func(color.Color)) 
 
 func colorRows(t *userTheme) fyne.CanvasObject {
 	all := []fyne.CanvasObject{}
-	all = append(all, colorRow("Background color", t.BackgroundColor(), t.SetBackgroundColor)...)
-	all = append(all, colorRow("Widget color", t.ButtonColor(), t.SetButtonColor)...)
-	all = append(all, colorRow("Hover color", t.HoverColor(), t.SetHoverColor)...)
-	all = append(all, colorRow("Primary color", t.PrimaryColor(), t.SetPrimaryColor)...)
-	all = append(all, colorRow("Text color", t.TextColor(), t.SetTextColor)...)
-	all = append(all, colorRow("Icon color", t.IconColor(), t.SetIconColor)...)
-	all = append(all, colorRow("Scrollbar color", t.ScrollBarColor(), t.SetScrollBarColor)...)
-	all = append(all, colorRow("Hyperlink color", t.HyperlinkColor(), t.SetHyperlinkColor)...)
+	all = append(all, colorRow("Фон", t.BackgroundColor(), t.SetBackgroundColor)...)
+	all = append(all, colorRow("Текст", t.TextColor(), t.SetTextColor)...)
+	all = append(all, colorRow("Виджеты", t.ButtonColor(), t.SetButtonColor)...)
+	all = append(all, colorRow("Акцент", t.PrimaryColor(), t.SetPrimaryColor)...)
+	all = append(all, colorRow("Иконки", t.IconColor(), t.SetIconColor)...)
+	all = append(all, colorRow("Бегунок", t.ScrollBarColor(), t.SetScrollBarColor)...)
+	all = append(all, colorRow("Ссылка", t.HyperlinkColor(), t.SetHyperlinkColor)...)
+	all = append(all, colorRow("При наведении", t.HoverColor(), t.SetHoverColor)...)
 
 	return fyne.NewContainerWithLayout(
 		layout.NewHBoxLayout(),

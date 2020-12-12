@@ -84,8 +84,10 @@ func content1() (C fyne.CanvasObject) {
 		widget.NewHBox(layout.NewSpacer(), mapBox, layout.NewSpacer()),
 		widget.NewLabel(""),
 		widget.NewHBox(layout.NewSpacer(), box, layout.NewSpacer()),
+		widget.NewLabel(""),
 		layout.NewSpacer(),
 		widget.NewVBox(layout.NewSpacer(), resultBox, layout.NewSpacer()),
+		widget.NewLabel(""),
 		layout.NewSpacer(),
 	)
 	return

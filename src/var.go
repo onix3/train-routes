@@ -19,9 +19,8 @@ func button2() {
 	mainButton.Icon = theme.MoveDownIcon()
 	mainButton.Refresh()
 }
-
-func buttonBack() {
-	time.Sleep(time.Second)
+func buttonBack(d time.Duration) {
+	time.Sleep(d)
 	mainButton.Icon = theme.DocumentCreateIcon()
 	mainButton.Refresh()
 }

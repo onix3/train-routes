@@ -10,7 +10,10 @@ import (
 
 // Проверка подключения к Интернету
 func haveConnection() bool {
-	resp,err := http.Get("https://www.google.com/")
+	client := http.Client{
+		Timeout: 500*time.Millisecond,
+	}
+	resp,err := client.Get("https://www.google.com/")
 	if err != nil {
 		fmt.Println(err)
 		return false
@@ -35,7 +38,7 @@ func mainButtonClick(s1,s2,tt string) {
 	if inCache(q) {
 		button2()
 		routes = routesCache[q]
-		go buttonBack()
+		go buttonBack(time.Second)
 	} else {
 		PastCity1,PastCity2 = s1,s2
 		saveLastCities(s1,s2)
@@ -47,9 +50,11 @@ func mainButtonClick(s1,s2,tt string) {
 			return
 		}
 
+		button1()
 		// проверка подключения к Интернету
 		if !haveConnection() {
 			dialog.ShowInformation("", "Нет подключения к Интернету", W)
+			buttonBack(0)
 			return
 		}
 
@@ -74,6 +79,7 @@ func mainButtonClick(s1,s2,tt string) {
 		// Если рейсов нет, то миниатюру скрыть
 		resultBox.Hide()
 		dialog.ShowInformation("", "Нет рейсов", W)
+		buttonBack(0)
 	}
 
 	resultBox.Refresh()

@@ -35,7 +35,7 @@ func LoadLastCities() (c1,c2 string) {
 	s := A.Preferences().StringWithFallback("last_cities", "")
 	split := strings.Split(s,"•")
 	if s == "" || len(split) != 2 {
-		return "Брест", "Минск"
+		return "Минск","Брест"
 	}
 	return split[0], split[1]
 }
