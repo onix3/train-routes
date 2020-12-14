@@ -36,18 +36,16 @@ func latestArrival(routes []route) (t time.Time) {
 // То есть диапазон, охватываемый диаграммой, может составить, допустим, 24+7 = 31 час
 // В этой функции вычисляется процент: "положение" времени t в этом диапазоне 0-31 часов
 func timePercent(t time.Time, hoursRange int) float64 {
-	d := t.Sub(today0000)
+	d := t.Sub(Now0000())
 	p := d.Minutes()/float64(hoursRange*60)
 	return p
 }
 
 // Получение изображения с нарисованной диаграммой
-func drawDiagram(routes []route, fileName string) image.Image {
-	today0000 = thisDay0000(routes[0].T1)
-
+func drawDiagram(c1,c2 string, routes []route) image.Image {
 	coef := 0.9
-	// Для первых трёх диаграмм оставить место для надписи про Янд-кс
-	if СколькоДиаграммСделано <= 2 {
+	// Для первой диаграммы оставить место для надписи про Янд-кс
+	if СколькоДиаграммПоказано <= 0 {
 		coef = 0.875
 	}
 
@@ -58,8 +56,8 @@ func drawDiagram(routes []route, fileName string) image.Image {
 	h := math.Round((float64(H)-sb)/float64(len(routes)))
 
 	// два узора для каждого направления
-	forwardPattern = pattern(h/2,h,true)
-	reversePattern = pattern(h/2,h,false)
+	forwardPattern := pattern(h/2,h,true)
+	reversePattern := pattern(h/2,h,false)
 
 	// создание полотна и заливка
 	C := gg.NewContext(W, H)
@@ -72,7 +70,8 @@ func drawDiagram(routes []route, fileName string) image.Image {
 	IsErr(err)
 
 	// сколько часов охватывает диаграмма
-	hours := int(latestArrival(routes).Sub(today0000).Hours()+1)
+	now0000 := Now0000()
+	hours := int(latestArrival(routes).Sub(now0000).Hours()+1)
 	if hours < 24 {
 		hours = 24
 	}
@@ -108,15 +107,29 @@ func drawDiagram(routes []route, fileName string) image.Image {
 		C.Stroke()
 	}
 
+	// найти индекс обратного рейса, перед которым прямой рейс
+	indexOfFirstReverse := 0
+	for i:=1; i<len(routes); i++ {
+		if c1 == routes[i-1].S1 && routes[i-1].S1 != routes[i].S1 {
+			indexOfFirstReverse = i
+			break
+		}
+	}
+	// координаты области
+	var rx0,ry0,rx1,ry1 int
+	// каждый раз задавать пустую область
+	cropRect = image.Rect(0,0,0,0)
+
 	// рейс представлен как прямоугольник и узором, характеризующим направление.
 	// время отправления и прибытия отображаются слева и справа при любом направлении
 	C.SetLineWidth(3)
 	for i,t := range routes {
-		x1 := math.Round(slr+(float64(W)-2*slr)*timePercent(t.T1,hours))+0.5
-		x2 := math.Round(slr+(float64(W)-2*slr)*timePercent(t.T2,hours))+0.5
+		tp1,tp2 := timePercent(t.T1,hours),timePercent(t.T2,hours)
+		x1 := math.Round(slr+(float64(W)-2*slr)*tp1)+0.5
+		x2 := math.Round(slr+(float64(W)-2*slr)*tp2)+0.5
 		y1 := math.Round(float64(i)*h)+0.5
 
-		if t.S1 == select1.Selected {
+		if t.S1 == c1 {
 			C.SetFillStyle(forwardPattern)
 		} else {
 			C.SetFillStyle(reversePattern)
@@ -132,11 +145,31 @@ func drawDiagram(routes []route, fileName string) image.Image {
 		timeString1, timeString2 := t.T1.Format("15:04"),t.T2.Format("15:04")
 
 		C.SetRGB255(255,192,0)
-		C.DrawStringAnchored(timeString1,
-			x1-10,y1+h/2,1.0,0.4)
-		C.DrawStringAnchored(timeString2,
-			x2+10,y1+h/2,0,0.4)
+		C.DrawStringAnchored(timeString1, x1-10, y1+h/2,1.0,0.4)
+		C.DrawStringAnchored(timeString2, x2+10, y1+h/2,0,0.4)
+
+		if indexOfFirstReverse != 0 && i == indexOfFirstReverse-1 {
+			strW,_ := C.MeasureString(timeString1)
+			rx0 = int(x1-strW)-10
+			ry0 = int(y1)
+		}
+		if indexOfFirstReverse != 0 && i == indexOfFirstReverse {
+			strW,_ := C.MeasureString(timeString2)
+			rx1 = int(x2+strW)+10
+			ry1 = int(y1+h)
+		}
 	}
+
+	if indexOfFirstReverse != 0 {
+		cropRect = image.Rect(rx0-20,ry0,rx1+20,ry1)
+	}
+
+	//// Для первой диаграммы пояснить узоры
+	//if СколькоДиаграммПоказано <= 0 {
+	//	w,h := C.MeasureString("Обратное направление")
+	//	C.DrawStringAnchored("Прямое направление", 10+w+10, float64(H)-5-h-5-h,1.0,0.4)
+	//	C.DrawStringAnchored("Обратное направление", 10+w+10, float64(H)-5-h-5-h,1.0,0.4)
+	//}
 
 	// применить шрифт снова (другого размера) и удалить файл
 	err = C.LoadFontFace("consolas.ttf",48)
@@ -146,17 +179,8 @@ func drawDiagram(routes []route, fileName string) image.Image {
 
 	// названия городов
 	C.SetRGBA255(0,0,0,64)
-	C.DrawStringAnchored(select1.Selected,
-		slr+20,float64(H/2),0,0.5)
-	C.DrawStringAnchored(select2.Selected,
-		float64(W)-slr-20,float64(H/2),1,0.5)
-
-
-	// сохранение диаграммы на Рабочий Стол
-	dir,err := os.UserHomeDir()
-	IsErr(err)
-	err = C.SavePNG(dir + "\\Desktop\\••• " + fileName + ".png")
-	IsErr(err)
+	C.DrawStringAnchored(c1, slr+20,float64(H/2),0,0.5)
+	C.DrawStringAnchored(c2, float64(W)-slr-20,float64(H/2),1,0.5)
 
 	return C.Image()
 }

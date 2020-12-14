@@ -58,12 +58,12 @@ func getRoutes(c1, c2, date, tt string) (routes []route) {
 	url := fmt.Sprintf("%s%s",
 		string(r.A), q)
 
-	routes = getRoutesFromUrl(c1, c2,url)
+	routes = getRoutesFromUrl(c1, c2, url)
 
 	return
 }
 
-func getRoutesFromUrl(c1,c2, url string) (routes []route) {
+func getRoutesFromUrl(c1, c2, url string) (routes []route) {
 	type Segment struct {
 		Arrival   time.Time `json:"arrival"`
 		Departure time.Time `json:"departure"`
@@ -77,9 +77,10 @@ func getRoutesFromUrl(c1,c2, url string) (routes []route) {
 	err := json.Unmarshal(j,&response)
 	IsErr(err)
 
+	tomorrow0000 := Now0000().AddDate(0,0,1)
 	for _,s := range response.Segments {
 		// почему-то Янд-кс присылает маршруты и следующих суток
-		if s.Departure.Before(today0000.AddDate(0,0,1)) {
+		if s.Departure.Before(tomorrow0000) {
 			routes = append(routes, route{
 				S1: c1,
 				S2: c2,

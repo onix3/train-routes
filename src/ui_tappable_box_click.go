@@ -45,7 +45,7 @@ func deployMap() {
 	w.Show()
 }
 
-func deployResult() {
+func deployDiagram() {
 	w := A.Driver().(desktop.Driver).CreateSplashWindow()
 	w.Resize(fyne.NewSize(ScreenWidth,ScreenHeight))
 	w.CenterOnScreen()
@@ -56,7 +56,7 @@ func deployResult() {
 	yandBox := widget.NewHBox(layout.NewSpacer(),label,hyperLink,layout.NewSpacer())
 
 	ci := &canvas.Image{
-		Image:     resultImage,
+		Image:     diagram,
 		FillMode:  canvas.ImageFillOriginal,
 		ScaleMode: canvas.ImageScalePixels,
 	}
@@ -73,13 +73,21 @@ func deployResult() {
 		ci,
 		widget.NewHBox(layout.NewSpacer(),b,layout.NewSpacer()),
 	)
-	// Для первых трёх диаграмм добавлять надпись про Янд-кс
-	if СколькоДиаграммСделано <= 3 {
+	// Для первой диаграммы добавлять надпись про Янд-кс
+	if СколькоДиаграммПоказано <= 0 {
 		vbox.Prepend(yandBox)
 	}
 
 	C := fyne.NewContainerWithLayout(layout.NewCenterLayout(), vbox)
 
 	w.SetContent(C)
+	KeyBindings(w)
 	w.Show()
+
+	if СколькоДиаграммПоказано <= 0 {
+		firstDiagramHelp(w)
+	}
+
+	СколькоДиаграммПоказано++
+	saveCountOfCompletedDiagrams()
 }

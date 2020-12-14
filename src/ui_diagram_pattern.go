@@ -26,5 +26,11 @@ func pattern(w,h float64, isForward bool) gg.Pattern {
 	C.SetLineWidth(w/2)
 	C.Stroke()
 
+	if isForward {
+		C.SavePNG("right.png")
+	} else {
+		C.SavePNG("left.png")
+	}
+
 	return gg.NewSurfacePattern(C.Image(), gg.RepeatBoth)
 }

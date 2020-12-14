@@ -43,9 +43,13 @@ func content2() fyne.CanvasObject {
 	parsed,_ := url.Parse("https://github.com/lusingander/fyne-theme-generator")
 	hyperLink := widget.NewHyperlink("here", parsed)
 
+	labelF1 := widget.NewLabel("F1")
+	labelF1.TextStyle.Bold = true
+
 	widgets := widget.NewVBox(
 		widget.NewHBox(button, layout.NewSpacer(), info, confirm),
 		scroller,
+		widget.NewHBox(labelF1, widget.NewLabel("Открыть справку")),
 		widget.NewHBox(label1, hyperLink),
 	)
 

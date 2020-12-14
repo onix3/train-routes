@@ -19,7 +19,7 @@ func main() {
 	// запросы кэшируются: при повторном запросе тех же рейсов запрос к API не осуществляется
 	src.LoadCache()
 	src.PastCity1,src.PastCity2 = src.LoadLastCities()
-	src.СколькоДиаграммСделано = src.LoadCountOfCompletedDiagrams()
+	src.СколькоДиаграммПоказано = src.LoadCountOfCompletedDiagrams()
 
 	// если есть запрос на сохранение темы, то сохранить
 	// нельзя сохранять при каждом изменении цвета, только один раз
@@ -33,10 +33,13 @@ func main() {
 			time.Sleep(time.Second)
 		}
 	}()
-
-	src.W = src.A.NewWindow("Расписаньице")
+	
+	src.W = src.A.NewWindow("Расписание поездов")
 	src.ScreenWidth, src.ScreenHeight = src.GetScreenHeight()
 	src.W.SetContent(src.Content())
+
+	src.KeyBindings(src.W)
+
 	src.W.CenterOnScreen()
 	src.W.ShowAndRun()
 }

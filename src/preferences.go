@@ -55,6 +55,7 @@ func LoadCountOfCompletedDiagrams() int {
 	return r
 }
 
+// Сохранить количество полученных диаграм
 func saveCountOfCompletedDiagrams() {
-	A.Preferences().SetString("count_of_completed_diagrams", strconv.Itoa(СколькоДиаграммСделано))
+	A.Preferences().SetString("count_of_completed_diagrams", strconv.Itoa(СколькоДиаграммПоказано))
 }

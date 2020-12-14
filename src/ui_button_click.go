@@ -43,7 +43,7 @@ func mainButtonClick(s1,s2,tt string) {
 		PastCity1,PastCity2 = s1,s2
 		saveLastCities(s1,s2)
 
-		resultBox.Hide()
+		diagramBox.Hide()
 
 		if s1 == s2 {
 			dialog.ShowInformation("", "Города должны быть разными", W)
@@ -65,22 +65,19 @@ func mainButtonClick(s1,s2,tt string) {
 
 	if len(routes) > 0 {
 		// Нарисовать диаграмму и сделать миниатюру с подписью
-		img := drawDiagram(routes, s1 + " → " + s2)
+		img := drawDiagram(s1,s2,routes)
 		smallImg := transform.Resize(img, 320, 180, transform.Linear)
 
-		СколькоДиаграммСделано++
-		saveCountOfCompletedDiagrams()
-
-		resultImage = img
-		resultImageWidget.Image = smallImg
-		resultText.Text = s1 + " — " + s2
-		resultBox.Show()
+		diagram = img
+		diagramWidget.Image = smallImg
+		diagramName.Text = s1 + " — " + s2
+		diagramBox.Show()
 	} else {
 		// Если рейсов нет, то миниатюру скрыть
-		resultBox.Hide()
+		diagramBox.Hide()
 		dialog.ShowInformation("", "Нет рейсов", W)
 		buttonBack(0)
 	}
 
-	resultBox.Refresh()
+	diagramBox.Refresh()
 }

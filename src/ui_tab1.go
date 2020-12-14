@@ -34,11 +34,11 @@ func content1() (C fyne.CanvasObject) {
 	////////////////////////////////////////////////////////
 
 	// два селектора и кнопка
-	select1 = &widget.Select{
+	select1 := &widget.Select{
 		Selected: PastCity1,
 		Options:  allCities(),
 	}
-	select2 = &widget.Select{
+	select2 := &widget.Select{
 		Selected: PastCity2,
 		Options:  allCities(),
 	}
@@ -52,10 +52,6 @@ func content1() (C fyne.CanvasObject) {
 		},
 	}
 
-	// когда приложение только что запущено и в селекторах последние выбранные станции
-	// нужно чтобы всё же кнопка срабатывала
-	PastCity1 = ""
-
 	box := widget.NewVBox(
 		widget.NewHBox(select1, select2),
 		mainButton,
@@ -64,20 +60,20 @@ func content1() (C fyne.CanvasObject) {
 	////////////////////////////////////////////////////////
 
 	// миниатюра диаграммы и подпись
-	resultImageWidget = &canvas.Image{
+	diagramWidget = &canvas.Image{
 		FillMode:     canvas.ImageFillOriginal,
 		ScaleMode:    canvas.ImageScalePixels,
 	}
-	resultImageWidget.Resize(fyne.NewSize(320,180))
-	resultText = &canvas.Text{
+	diagramWidget.Resize(fyne.NewSize(320,180))
+	diagramName = &canvas.Text{
 		Color: color.RGBA{242, 78, 124, 255},
 		Text: "",
 		Alignment: fyne.TextAlignCenter,
 		TextSize: 16,
 		TextStyle: fyne.TextStyle{Bold: true},
 	}
-	resultBox = newTappableBox(widget.NewVBox(resultImageWidget, resultText), deployResult)
-	resultBox.Hide()
+	diagramBox = newTappableBox(widget.NewVBox(diagramWidget, diagramName), deployDiagram)
+	diagramBox.Hide()
 
 	C = widget.NewVBox(
 		widget.NewLabel(""),
@@ -86,7 +82,7 @@ func content1() (C fyne.CanvasObject) {
 		widget.NewHBox(layout.NewSpacer(), box, layout.NewSpacer()),
 		widget.NewLabel(""),
 		layout.NewSpacer(),
-		widget.NewVBox(layout.NewSpacer(), resultBox, layout.NewSpacer()),
+		widget.NewVBox(layout.NewSpacer(), diagramBox, layout.NewSpacer()),
 		widget.NewLabel(""),
 		layout.NewSpacer(),
 	)
